@@ -11,10 +11,10 @@ def run(playwright):
     # Check Title
     expect(page).to_have_title("Toko Digital")
 
-    # Check Search Bar (Indonesian)
-    expect(page.get_by_placeholder("Cari produk...")).to_be_visible()
+    # Check Search Bar (Placeholder might have changed in new UI design "Cari produk digital...")
+    expect(page.get_by_placeholder("Cari produk digital...")).to_be_visible()
 
-    # Check Categories (Header) - Indonesian
+    # Check Categories (Header)
     expect(page.get_by_role("heading", name="Kategori")).to_be_visible()
     expect(page.get_by_role("heading", name="Produk Populer")).to_be_visible()
 

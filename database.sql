@@ -7,6 +7,13 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -72,4 +79,7 @@ CREATE TABLE IF NOT EXISTS settings (
 
 INSERT INTO settings (setting_key, setting_value) VALUES
 ('site_title', 'Toko Digital'),
-('banner_image', 'https://via.placeholder.com/800x400');
+('banner_image', '["https://via.placeholder.com/800x400"]');
+
+-- Default Admin (Password: admin123)
+INSERT INTO admins (username, password) VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');

@@ -6,7 +6,10 @@ if (class_exists('Env')) {
 }
 
 // App Config
-define('BASEURL', getenv('BASE_URL') ?: 'http://localhost:8000');
+$baseUrl = getenv('BASE_URL') ?: 'http://localhost:8000';
+$baseUrl = rtrim($baseUrl, '/'); // Ensure no trailing slash
+define('BASEURL', $baseUrl);
+
 define('APP_NAME', getenv('APP_NAME') ?: 'Toko Digital');
 define('WA_NUMBER', getenv('WA_NUMBER'));
 

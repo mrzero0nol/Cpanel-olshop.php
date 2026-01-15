@@ -11,16 +11,23 @@ class Admin extends Controller {
 
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'];
+            // CSRF Check
+            if (!Csrf::verify($_POST['csrf_token'])) {
+                die('Invalid CSRF Token');
+            }
+
+            $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
             $password = $_POST['password'];
 
-            // Check against Environment Variables
-            if ($username === PAKASIR_PROJECT_SLUG && $password === PAKASIR_API_KEY) {
+            $admin = $this->model('Admin_model')->getAdminByUsername($username);
+
+            if ($admin && password_verify($password, $admin['password'])) {
                 $_SESSION['admin_logged_in'] = true;
+                $_SESSION['admin_id'] = $admin['id'];
                 header('Location: ' . BASEURL . '/admin/dashboard');
                 exit;
             } else {
-                Flasher::setFlash('Login Failed', 'Username or Password incorrect', 'danger');
+                Flasher::setFlash('Login Gagal', 'Username atau Password salah', 'danger');
                 header('Location: ' . BASEURL . '/admin');
                 exit;
             }
@@ -50,9 +57,13 @@ class Admin extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
              $settingsModel = $this->model('Settings_model');
              foreach($_POST as $key => $value) {
+                 // Sanitize simple inputs, but keep JSON raw for banner_image
+                 if ($key !== 'banner_image') {
+                     $value = htmlspecialchars($value);
+                 }
                  $settingsModel->updateSetting($key, $value);
              }
-             Flasher::setFlash('Success', 'Settings updated', 'success');
+             Flasher::setFlash('Sukses', 'Pengaturan berhasil disimpan', 'success');
              header('Location: ' . BASEURL . '/admin/settings');
              exit;
         }
@@ -67,6 +78,7 @@ class Admin extends Controller {
 
     public function logout() {
         unset($_SESSION['admin_logged_in']);
+        unset($_SESSION['admin_id']);
         session_destroy();
         header('Location: ' . BASEURL . '/admin');
         exit;
