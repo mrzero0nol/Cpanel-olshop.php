@@ -1,4 +1,35 @@
 <?php
+if (!file_exists('config.php')) {
+    die('<!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Setup Required</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100 h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-md max-w-md text-center">
+            <div class="text-6xl mb-4 text-yellow-500"><i class="fas fa-exclamation-circle"></i></div>
+            <h1 class="text-2xl font-bold mb-4 text-gray-800">Website Belum Dikonfigurasi</h1>
+            <p class="text-gray-600 mb-6">File <code>config.php</code> tidak ditemukan.</p>
+            <div class="text-left bg-gray-50 p-4 rounded border text-sm mb-6">
+                <strong>Cara Memperbaiki:</strong>
+                <ol class="list-decimal ml-5 mt-2 space-y-1">
+                    <li>Buka File Manager di cPanel.</li>
+                    <li>Cari file bernama <code>config.sample.php</code>.</li>
+                    <li>Rename menjadi <code>config.php</code>.</li>
+                    <li>Edit file tersebut dan masukkan username, password, dan nama database Anda.</li>
+                </ol>
+            </div>
+            <button onclick="location.reload()" class="bg-blue-500 text-white font-bold py-2 px-6 rounded hover:bg-blue-600">
+                Saya Sudah Perbaiki, Refresh Halaman
+            </button>
+        </div>
+    </body>
+    </html>');
+}
+
 require_once 'includes/header.php';
 
 // Fetch Categories
